@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JPSEC - 主页</title>
+    <title>JPSEC - 文档中心</title>
     <style>
         * {
             margin: 0;
@@ -14,20 +14,17 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             line-height: 1.6;
             color: #333;
+            background: #f5f7fa;
         }
         header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 3rem 2rem;
+            padding: 2rem;
             text-align: center;
         }
         header h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
         }
         nav {
             background: #fff;
@@ -39,43 +36,177 @@
             display: flex;
             justify-content: center;
             gap: 2rem;
+            flex-wrap: wrap;
         }
         nav a {
             text-decoration: none;
             color: #667eea;
             font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s;
         }
-        nav a:hover {
-            color: #764ba2;
+        nav a:hover, nav a.active {
+            background: #667eea;
+            color: white;
         }
         main {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 3rem 2rem;
+            padding: 2rem;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
         }
         .hero {
             text-align: center;
-            padding: 4rem 2rem;
+            padding: 3rem 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
         .hero h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
             color: #667eea;
+            margin-bottom: 1rem;
         }
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-        .feature {
+        .upload-section {
+            margin-top: 2rem;
             padding: 2rem;
-            background: #f8f9fa;
+            border: 2px dashed #667eea;
             border-radius: 12px;
             text-align: center;
+            background: #fafafa;
         }
-        .feature h3 {
+        .upload-section h3 {
+            margin-bottom: 1rem;
             color: #764ba2;
+        }
+        .upload-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+        .upload-btn:hover {
+            opacity: 0.9;
+        }
+        #fileInput {
+            display: none;
+        }
+        .doc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .doc-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .doc-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        }
+        .doc-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .doc-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            word-break: break-all;
+        }
+        .doc-meta {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        .doc-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-block;
+            transition: opacity 0.3s;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        .btn-view {
+            background: #667eea;
+            color: white;
+        }
+        .btn-download {
+            background: #48bb78;
+            color: white;
+        }
+        .btn-delete {
+            background: #f56565;
+            color: white;
+        }
+        .viewer-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+        }
+        .viewer-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .viewer-content {
+            width: 90%;
+            height: 90%;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        .viewer-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .viewer-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        .empty-state p {
             margin-bottom: 1rem;
         }
         footer {
@@ -85,47 +216,245 @@
             padding: 2rem;
             margin-top: 3rem;
         }
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #856404;
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>JPSEC</h1>
-        <p>欢迎来到 JPSEC</p>
+        <h1>JPSEC - 文档中心</h1>
+        <p>在线预览和下载 Word、Excel、PPT 文档</p>
     </header>
     
     <nav>
         <ul>
-            <li><a href="#">首页</a></li>
-            <li><a href="#">关于</a></li>
-            <li><a href="#">服务</a></li>
-            <li><a href="#">联系我们</a></li>
+            <li><a href="#" class="active" data-page="home">首页</a></li>
+            <li><a href="#" data-page="documents">文档库</a></li>
         </ul>
     </nav>
     
     <main>
-        <section class="hero">
-            <h2>致力于为您提供优质服务</h2>
-            <p>JPSEC - 您的信赖之选</p>
-        </section>
+        <!-- 首页 -->
+        <div id="home" class="page active">
+            <div class="hero">
+                <h2>欢迎使用 JPSEC 文档中心</h2>
+                <p>上传、预览、下载文档，一站式服务</p>
+                
+                <div class="upload-section">
+                    <h3>📤 上传新文档</h3>
+                    <p>支持 Word (.doc/.docx)、Excel (.xls/.xlsx)、PowerPoint (.ppt/.pptx)</p>
+                    <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                        选择文件上传
+                    </button>
+                    <input type="file" id="fileInput" accept=".doc,.docx,.xls,.xlsx,.ppt,.pptx" multiple>
+                    <div class="note">
+                        <strong>注意：</strong>由于是静态网站，文件保存在浏览器本地。正式使用需配置后端存储。
+                    </div>
+                </div>
+            </div>
+        </div>
         
-        <section class="features">
-            <div class="feature">
-                <h3>安全可靠</h3>
-                <p>我们提供最安全的服务，保障您的数据安全</p>
+        <!-- 文档库 -->
+        <div id="documents" class="page">
+            <h2 style="margin-bottom: 1rem;">📚 文档列表</h2>
+            <div id="docList" class="doc-grid">
+                <div class="empty-state">
+                    <p>暂无文档，请先上传</p>
+                </div>
             </div>
-            <div class="feature">
-                <h3>专业团队</h3>
-                <p>经验丰富的专业团队，为您提供全方位支持</p>
-            </div>
-            <div class="feature">
-                <h3>高效便捷</h3>
-                <p>快速响应，高效处理，让您的需求得到满足</p>
-            </div>
-        </section>
+        </div>
     </main>
+    
+    <!-- 预览弹窗 -->
+    <div id="viewerModal" class="viewer-modal">
+        <div class="viewer-content">
+            <button class="viewer-close" onclick="closeViewer()">✕ 关闭</button>
+            <iframe id="viewerFrame" class="viewer-frame" src=""></iframe>
+        </div>
+    </div>
     
     <footer>
         <p>&copy; 2026 JPSEC. All rights reserved.</p>
     </footer>
+
+    <script>
+        // 文档存储（使用 localStorage）
+        const STORAGE_KEY = 'jpsec_documents';
+        
+        // 从 localStorage 加载文档
+        function loadDocuments() {
+            const docs = localStorage.getItem(STORAGE_KEY);
+            return docs ? JSON.parse(docs) : [];
+        }
+        
+        // 保存文档到 localStorage
+        function saveDocuments(docs) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(docs));
+        }
+        
+        // 获取文件图标
+        function getFileIcon(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const icons = {
+                'doc': '📄', 'docx': '📄',
+                'xls': '📊', 'xlsx': '📊',
+                'ppt': '📽️', 'pptx': '📽️'
+            };
+            return icons[ext] || '📁';
+        }
+        
+        // 获取文件类型
+        function getFileType(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            if (['doc', 'docx'].includes(ext)) return 'word';
+            if (['xls', 'xlsx'].includes(ext)) return 'excel';
+            if (['ppt', 'pptx'].includes(ext)) return 'powerpoint';
+            return 'unknown';
+        }
+        
+        // 生成 Office Online 预览链接
+        function getViewerUrl(filename, dataUrl) {
+            // 使用 Microsoft Office Online Viewer
+            const encodedUrl = encodeURIComponent(dataUrl);
+            return `https://view.officeapps.live.com/op/embed.aspx?src=${encodedUrl}`;
+        }
+        
+        // 渲染文档列表
+        function renderDocuments() {
+            const docs = loadDocuments();
+            const container = document.getElementById('docList');
+            
+            if (docs.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>暂无文档，请先在上页上传</p></div>';
+                return;
+            }
+            
+            container.innerHTML = docs.map((doc, index) => `
+                <div class="doc-card">
+                    <div class="doc-icon">${getFileIcon(doc.name)}</div>
+                    <div class="doc-name">${doc.name}</div>
+                    <div class="doc-meta">${doc.size} | ${doc.uploadDate}</div>
+                    <div class="doc-actions">
+                        <button class="btn btn-view" onclick="viewDocument(${index})">预览</button>
+                        <a class="btn btn-download" href="${doc.data}" download="${doc.name}">下载</a>
+                        <button class="btn btn-delete" onclick="deleteDocument(${index})">删除</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // 预览文档
+        function viewDocument(index) {
+            const docs = loadDocuments();
+            const doc = docs[index];
+            
+            const modal = document.getElementById('viewerModal');
+            const frame = document.getElementById('viewerFrame');
+            
+            // 使用 Office Online Viewer
+            frame.src = getViewerUrl(doc.name, doc.data);
+            modal.classList.add('active');
+        }
+        
+        // 关闭预览
+        function closeViewer() {
+            const modal = document.getElementById('viewerModal');
+            const frame = document.getElementById('viewerFrame');
+            frame.src = '';
+            modal.classList.remove('active');
+        }
+        
+        // 删除文档
+        function deleteDocument(index) {
+            if (!confirm('确定要删除这个文档吗？')) return;
+            
+            const docs = loadDocuments();
+            docs.splice(index, 1);
+            saveDocuments(docs);
+            renderDocuments();
+        }
+        
+        // 文件上传处理
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const files = e.target.files;
+            
+            for (let file of files) {
+                // 检查文件类型
+                const allowedTypes = ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'];
+                const ext = file.name.split('.').pop().toLowerCase();
+                
+                if (!allowedTypes.includes(ext)) {
+                    alert(`不支持的文件类型: ${file.name}`);
+                    continue;
+                }
+                
+                // 检查文件大小 (限制 10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert(`文件太大: ${file.name} (最大 10MB)`);
+                    continue;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const docs = loadDocuments();
+                    docs.push({
+                        name: file.name,
+                        size: formatFileSize(file.size),
+                        type: getFileType(file.name),
+                        data: event.target.result,
+                        uploadDate: new Date().toLocaleString('zh-CN')
+                    });
+                    saveDocuments(docs);
+                    alert(`${file.name} 上传成功！`);
+                    renderDocuments();
+                };
+                reader.readAsDataURL(file);
+            }
+            
+            // 清空 input 以便重复选择同一文件
+            this.value = '';
+        });
+        
+        // 格式化文件大小
+        function formatFileSize(bytes) {
+            if (bytes < 1024) return bytes + ' B';
+            if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+        
+        // 页面切换
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // 更新导航状态
+                document.querySelectorAll('nav a').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // 切换页面
+                const pageId = this.getAttribute('data-page');
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                document.getElementById(pageId).classList.add('active');
+                
+                if (pageId === 'documents') {
+                    renderDocuments();
+                }
+            });
+        });
+        
+        // ESC 关闭预览
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeViewer();
+            }
+        });
+    </script>
 </body>
 </html>
