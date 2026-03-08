@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JPSEC - 文件仓库</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = 'https://ahcnimrquhjvamokvtic.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoY25pbXJxdWhqdmFtb2t2dGljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NjMyMzQsImV4cCI6MjA4ODUzOTIzNH0.q5Y9py6jA3bF-HFk8Bw9mOVS5DPd0flh-Da5WVwyZds';
+        var supabase;
+        function initSupabase() {
+            if (typeof supabase !== 'undefined' && supabase.createClient) {
+                supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            } else {
+                setTimeout(initSupabase, 100);
+            }
+        }
+        initSupabase();
+    </script>
     <style>
         * {
             margin: 0;
@@ -499,13 +512,6 @@
     </footer>
 
     <script>
-        // Supabase 配置
-        const SUPABASE_URL = 'https://ahcnimrquhjvamokvtic.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFoY25pbXJxdWhqdmFtb2t2dGljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5NjMyMzQsImV4cCI6MjA4ODUzOTIzNH0.q5Y9py6jA3bF-HFk8Bw9mOVS5DPd0flh-Da5WVwyZds';
-        
-        const { createClient } = supabase;
-        const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-        
         // 当前用户
         let currentUser = null;
         
